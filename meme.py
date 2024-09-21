@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 
@@ -42,9 +43,13 @@ def generate_meme(path=None, body=None, author=None):
 
 
 if __name__ == "__main__":
-    # @TODO Use ArgumentParser to parse the following CLI arguments
-    # path - path to an image file
-    # body - quote body to add to the image
-    # author - quote author to add to the image
-    args = None
+    parser = argparse.ArgumentParser(
+        description="Generate a meme with an optional quote.")
+    parser.add_argument('--path', type=str, help='Path to an image file')
+    parser.add_argument(
+        '--body', type=str, help='Quote body to add to the image')
+    parser.add_argument(
+        '--author', type=str, help='Quote author to add to the image')
+
+    args = parser.parse_args()
     print(generate_meme(args.path, args.body, args.author))

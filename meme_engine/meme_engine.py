@@ -1,3 +1,5 @@
+import os
+
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -17,6 +19,7 @@ class MemeEngine:
             output_dir (str): The directory where the generated memes will be
             saved.
         """
+        os.makedirs(output_dir, exist_ok=True)
         self.output_dir = output_dir
 
     def make_meme(self, img_path, text, author, width=500):
@@ -42,7 +45,9 @@ class MemeEngine:
         font = ImageFont.truetype("arial.ttf", size=20)
         
         text = f"{text} - {author}"
-        text_width, text_height = draw.textsize(text, font=font)
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_height = text_bbox[3] - text_bbox[1]
         x = (img.width - text_width) / 2
         y = img.height - text_height - 10
 

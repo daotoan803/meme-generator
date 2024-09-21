@@ -17,19 +17,6 @@ class CSVIngestor(IngestorInterface):
     allowed_extensions = ['csv']
 
     @classmethod
-    def can_ingest(cls, path: str) -> bool:
-        """Check if the file extension is CSV.
-
-        Args:
-            path (str): The file path to check.
-
-        Returns:
-            bool: True if the file is a CSV, otherwise False.
-        """
-        ext = path.split('.')[-1]
-        return ext in cls.allowed_extensions
-
-    @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Parse a CSV file to extract quotes.
 

@@ -1,6 +1,9 @@
 
 from typing import List
 
+from quote_engine.ingestor.docx_ingestor import DocxIngestor
+from quote_engine.ingestor.pdf_ingestor import PDFIngestor
+
 from .ingestor.csv_ingestor import CSVIngestor
 from .ingestor.text_ingestor import TextIngestor
 from .quote_model import QuoteModel
@@ -18,7 +21,7 @@ class Ingestor:
         parse: Parse a file based on its type using the appropriate ingestor.
     """
 
-    ingestors = [CSVIngestor, TextIngestor]  # Add more ingestors as needed
+    ingestors = [CSVIngestor, TextIngestor, PDFIngestor, DocxIngestor]
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:

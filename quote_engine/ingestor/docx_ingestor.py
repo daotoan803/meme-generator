@@ -18,19 +18,6 @@ class DocxIngestor(IngestorInterface):
     allowed_extensions = ['docx']
 
     @classmethod
-    def can_ingest(cls, path: str) -> bool:
-        """Check if the file extension is DOCX.
-
-        Args:
-            path (str): The file path to check.
-
-        Returns:
-            bool: True if the file is a DOCX, otherwise False.
-        """
-        ext = path.split('.')[-1]
-        return ext in cls.allowed_extensions
-    
-    @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Parse a docx file to extract quotes.
 
@@ -42,7 +29,7 @@ class DocxIngestor(IngestorInterface):
             the docx file.
         """
         if not cls.can_ingest(path):
-            raise Exception('Cannot ingest exception')
+            raise ValueError('Cannot ingest exception')
 
         quotes = []
         doc = docx.Document(path)

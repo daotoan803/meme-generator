@@ -10,8 +10,8 @@ class IngestorInterface(ABC):
     Provides the interface to check file types and parse them into QuoteModel
     instances.
     """
-    
-        
+
+    allowed_extensions: List[str] = []
 
     @classmethod
     def can_ingest(cls, path: str) -> bool:
@@ -23,6 +23,8 @@ class IngestorInterface(ABC):
         Returns:
             bool: True if the file can be ingested, False otherwise.
         """
+        ext = path.split('.')[-1]
+        return ext in cls.allowed_extensions
 
     @classmethod
     @abstractmethod
