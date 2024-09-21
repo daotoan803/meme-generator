@@ -10,9 +10,10 @@ class IngestorInterface(ABC):
     Provides the interface to check file types and parse them into QuoteModel
     instances.
     """
+    
+        
 
     @classmethod
-    @abstractmethod
     def can_ingest(cls, path: str) -> bool:
         """Check if the file extension is supported for ingestion.
 
