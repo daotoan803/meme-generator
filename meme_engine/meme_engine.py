@@ -2,6 +2,9 @@ import os
 
 from PIL import Image, ImageDraw, ImageFont
 
+FONT_PATH = os.path.join(
+    os.path.dirname(__file__), "..", "assets", "arial.ttf")
+
 
 class MemeEngine:
     """A class to generate memes by overlaying text on images.
@@ -42,8 +45,7 @@ class MemeEngine:
         img = img.resize((width, new_height), Image.Resampling.LANCZOS)
 
         draw = ImageDraw.Draw(img)
-        font = ImageFont.truetype("arial.ttf", size=20)
-        
+        font = ImageFont.truetype(FONT_PATH, size=20)
         text = f"{text} - {author}"
         text_bbox = draw.textbbox((0, 0), text, font=font)
         text_width = text_bbox[2] - text_bbox[0]

@@ -36,6 +36,30 @@ def setup():
 quotes, imgs = setup()
 
 
+def get_image(image_url: str):
+    """
+    Fetch an image from the given URL.
+    Args:
+        image_url (str): The URL of the image to download.
+
+    Returns:
+        requests.Response: The response object containing the image
+        data if the request is successful.
+
+    Raises:
+        ValueError: If the URL is invalid, the request fails,
+        or the response does not contain an image.
+    """
+
+    try:
+        response = requests.get(image_url, timeout=10)
+        if "image" not in response.headers["Content-Type"]:
+            raise ValueError("The URL does not point to a valid image")
+        return response
+    except Exception as exc:
+        raise ValueError('Image URL is invalid') from exc
+
+
 @app.route('/')
 def meme_rand():
     """ Generate a random meme """
@@ -55,24 +79,32 @@ def meme_form():
 @app.route('/create', methods=['POST'])
 def meme_post():
     """ Create a user defined meme """
+    try:
+        image_url = request.form['image_url']
+        body = request.form['body']
+        author = request.form['author']
 
-    image_url = request.form['image_url']
-    body = request.form['body']
-    author = request.form['author']
+        # Download the image
+        response = get_image(image_url)
 
-    # Download the image
-    response = requests.get(image_url)
-    temp_img_path = './static/temp_image.jpg'
-    with open(temp_img_path, 'wb') as file:
-        file.write(response.content)
+        temp_img_path = './static/temp_image.jpg'
+        with open(temp_img_path, 'wb') as file:
+            file.write(response.content)
 
-    # Generate the meme
-    path = meme.make_meme(temp_img_path, body, author)
+        # Generate the meme
+        path = meme.make_meme(temp_img_path, body, author)
 
-    # Remove the temporary image
-    os.remove(temp_img_path)
+        # Remove the temporary image
+        os.remove(temp_img_path)
 
-    return render_template('meme.html', path=path)
+        return render_template('meme.html', path=path)
+    except ValueError as error:
+        print(error)
+        return render_template(
+            'meme_form.html', error=error or 'Something went wrong')
+    except Exception as error:
+        print(error)
+        return render_template('meme_form.html', error='Somethings went wrong')
 
 
 if __name__ == "__main__":

@@ -16,6 +16,9 @@
                 <label for="author">Quote Author</label>
                 <input type="text" class="form-control" id="author" aria-describedby="Quote Author" placeholder="Shakespeare" name="author">
             </div>
+              {% if error %}
+                  <p class='text-danger'>{{ error }}</p>
+              {% endif %}
             <button type="submit" class="btn btn-primary">Create Meme!</button>
         </form>
     </div>
